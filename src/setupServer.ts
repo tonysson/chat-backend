@@ -64,16 +64,20 @@ export class ChattyServer {
     );
   }
 
+  //MIDDLEWARE
   private standarMiddleware(app: Application): void {
     app.use(compression());
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ extended: true, limit: '50mb' }));
   }
 
+
+  // ROUTES
   private routesMiddleware(app: Application): void {
     applicattionRoutes(app);
   }
 
+  // ERROR HANDLER
   private globalErrorHandler(app: Application): void {
     app.all('*', (req: Request, res: Response) => {
       res
@@ -99,7 +103,7 @@ export class ChattyServer {
 
   private async startServer(app: Application): Promise<void> {
     try {
-      const httpServer: http.Server = new http.Server();
+      const httpServer: http.Server = new http.Server(app);
       const socketIO: Server = await this.createSocketIO(httpServer);
       this.startHttpServer(httpServer);
       this.socketIOConnection(socketIO);
