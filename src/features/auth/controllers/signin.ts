@@ -7,10 +7,8 @@ import { authService } from '@service/db/auth.service';
 import { BadRequestError } from '@global/helpers/error-handler';
 import { loginSchema } from '@auth/schemes/signin';
 import { IAuthDocument } from '@auth/interfaces/auth.interface';
-import { userService } from './../../../shared/services/db/user.service';
-import { IUserDocument } from '@user/interfaces/user.interface';
-
-
+import { userService } from '@service/db/user.service';
+import {IUserDocument} from '@user/interfaces/user.interface';
 
 export class SignIn {
   @joiValidation(loginSchema)
@@ -52,12 +50,28 @@ export class SignIn {
       uId: existingUser!.uId,
       createdAt: existingUser!.createdAt,
     } as IUserDocument;
-    res
-      .status(HTTP_STATUS.OK)
-      .json({
-        message: 'User login successfully',
-        user: userDocument,
-        token: userJwt,
-      });
+
+    // SEND MAIL TESTING
+    // await mailTransport.sendEmail('arnaldo41@ethereal.email' , 'Testing email' , 'This is a test email to check our function... Happy coding!!!! ');
+    // const templateParams: IResetPasswordParams = {
+    //   username: existingUser!.username,
+    //   email: existingUser!.email,
+    //   ipaddress: publicIp.address(),
+    //   date: moment().format('DD/MM/YYYY HH:mm'),
+    // };
+    // const resetLink = `${config.CLIENT_URL}/reset-password?token=12444455`;
+    // const template: string =
+    //   resetPasswordTemplate.passwordResetConfirmationTemplate(templateParams);
+    // emailQueue.addEmailJob('forgotPasswordEmail', {
+    //   receiverEmail: 'lynn.toy94@ethereal.email',
+    //   subject: 'Password reset confirmation',
+    //   template,
+    // });
+
+    res.status(HTTP_STATUS.OK).json({
+      message: 'User login successfully',
+      user: userDocument,
+      token: userJwt,
+    });
   }
 }
