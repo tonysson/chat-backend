@@ -18,7 +18,7 @@ export class SignIn {
       username
     );
     if (!existingUser) {
-      throw new BadRequestError('No user found');
+      throw new BadRequestError('Invalid credentials');
     }
 
     const isPasswordsMatch: boolean = await existingUser.comparePassword(
